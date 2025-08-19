@@ -1,7 +1,7 @@
-(dbt)=
+(dbt_transformacao)=
 # 15.3 Transformação de dados com dbt
 
-Nesta seção vamos apresentar como fazer a modelagem de um DW na prática usando o dbt. Para tanto, nós precisamos primeiro realizar a carga dos dados brutos em nosso DW [(que fizemos na seção anterior)](). Com os dados já inseridos no DW, vamos criar uma séries de modelos para materializar o modelo conceitual do DW que criamos [anteriormente]().
+Nesta seção vamos apresentar como fazer a modelagem de um DW na prática usando o dbt. Para tanto, nós precisamos primeiro realizar a carga dos dados brutos em nosso DW {ref}`que fizemos na seção anterior<arquiteturas_transformacao>`. Com os dados já inseridos no DW, vamos criar uma séries de modelos para materializar o modelo conceitual do DW que criamos {ref}`anteriormente<modelagem_dw>`.
 
 Antes de começar a parte técnica, é bom lembrar que o objetivo de um DW é gerar resultado para a empresa e não criar um sistema que, embora possa ser tecnicamente bem feito, não tenha uma visão de negócio. Deste modo, a forma como criamos os marts e suas tabelas fato e dimensões deve ser sempre pensado nos problemas prioritários na tomada de decisão e na utilização pelo usuário final. Um erro comum de projetos de DW é pensar mais nos modelos de dados das aplicações-fonte e menos no modelo de negócios do usuário final. Se for difícil saber *a priori* como será essa utilização, podemos recorrer a instrumentos já usados na tomada de decisão como relatórios, planilhas, etc. para ter uma ideia de que tipo de relações e atributos são mais relevantes para o cliente.
 
@@ -26,7 +26,7 @@ O primeiro passo de um projeto dbt é a criação da pasta onde estão estrutura
 Se você clonou o repositório de exemplo, as etapas dessa subseção já terão sido feitas para você.
 ```
 
-```yaml
+```{code-block} yaml
 name: 'northwind'
 version: '1.0.0'
 config-version: 2
@@ -79,7 +79,7 @@ A opção target permite alterar entre um ambiente de desenvolvimento e produç�
 
 Atualmente o dbt possui drivers para os principais data warehouses na nuvem e alguns bancos de dados tradicionais, cada driver possui configurações específicas que podem ser consultadas [aqui](https://docs.getdbt.com/docs/available-adapters).
 
-```yaml
+```{code-block} yaml
 northwind:
   outputs:
     dev:
@@ -145,14 +145,14 @@ Nesta seção é esperado que os dados brutos da Northwind já estejam disponív
 
 Depois de definidas as fontes, elas podem ser chamadas nos modelos através da sintaxe:
 
-```sql
+```{code-block} sql
 select * 
 from {{source('nome_fonte', 'nome_tabela')}}
 ```
 
 Não é necessário mapear todas as tabelas do data warehouse de uma vez, mas podemos adicionar de forma incremental o que for necessário para os modelos. O uso do arquivo de sources permite criar a linhagem dos dados através da função `{ source('nome_da_fonte',’nome_da_tabela’)}}` e também permite documentar e escrever testes sobre as fontes de dados.
 
-```yaml
+```{code-block} yaml
 version: 2
 
 sources:
@@ -194,7 +194,7 @@ Em nosso primeiro modelo vamos ler a tabela *customers* da fonte northwind e cri
 Você pode notar que os modelos dim_products e stg_products já estão disponíveis no repositório de exemplo. Use-os como referência para construir os demais modelos.
 ```
 
-```sql
+```{code-block} sql
 with
     source_data as (
         select
@@ -272,7 +272,7 @@ Vamos omitir as etapas 1 e 2 e partir diretamente para a etapa 3: Criar as tabel
 As chaves auto-incrementais são muito utilizadas em bancos de dados e de fácil entendimento pelos consumidores dos dados. No entanto, em *data warehouses* modernos elas podem ser perigosas. Por quê?
 ```
 
-```SQL
+```{code-block} sql
 with 
     staging as (
         select *
@@ -300,7 +300,7 @@ select *  from transformed
 
 Depois de criadas as tabelas dimensão, mudamos nossa atenção para a tabela fato. Iniciamos pela tabela de capa do pedido (*orders*) e suas dimensões `dim_shippers`, `dim_customers` e `dim_employees`. A ideia é criar uma tabela fato apenas com as chaves estrangeiras porém logo vemos que algumas colunas da tabela de pedidos não são medidas mas crescem proporcionalmente à tabela fato (informações de entrega, Código do Pedido, etc). Deste modo, resolvemos deixar essas informações na tabela fato como dimensões degeneradas. 
 
-```SQL
+```{code-block} sql
 with customers as (
    select
      customer_sk
@@ -363,7 +363,7 @@ select * from orders_with_sk
 
 Ocorre que não queremos apenas a capa dos pedidos mas também o detalhamento desses pedidos na tabela fato, ou seja, queremos que o grão da tabela seja cada item do pedido de modo que possamos somar um total ou média de pedidos por produto/cliente sem recorrer a outras operações de JOIN. Como já vimos no capítulo anterior, a melhor opção é juntar a capa do pedido (orders) e o detalhe do pedido (order_details) na mesma tabela fato, ainda que essa arquitetura não seja tão eficiente em termos de armazenamento:
 
-```SQL
+```{code-block} sql
 (...)
     , final as (
         select
@@ -422,7 +422,7 @@ $ dbt run
 
 Podemos notar no output do dbt run que o dbt nos informa o tipo de materialização de cada modelo. Mas como configuramos isso? Há duas formas: através de uma configuração em cada modelo ou de forma mais geral no `dbt_project`. No primeiro exemplo abaixo, podemos dizer para o dbt materializar o modelo `fct_order_detail` como tabela no banco de dados, aumentando a performance em relação à visualização (*view*). No segundo caso, resolvemos que as tabelas staging não são necessárias em nosso DW mas apenas no processo de transformação e por isso definimos que todos os modelos na pasta models/staging não serão materializados (*ephemeral*). Quando os dois casos estiverem presentes para o mesmo modelo, a configuração dada no modelo leva prioridade sobre a presente no projeto. Em geral, **devemos evitar configurar materializações nos modelos e utilizar as opções do dbt_project.**
 
-```SQL
+```{code-block} sql
 {{config (materialized='table')}}
 
 with customers (
@@ -433,7 +433,7 @@ with customers (
 ```
 **Exemplo de configuração de materialização no modelo do dbt**
 
-```yaml
+```{code-block} yaml
 models:
   northwind:
       staging:
@@ -458,7 +458,7 @@ Conceitualmente, há dois tipos de [testes](https://docs.getdbt.com/docs/buildin
 
 De forma geral, devemos incluir ao menos um testes genérico para cada modelo na sua chave primária (surrogate ou natural). Por exemplo, para garantir que não tenhamos nenhum cliente repetido na tabela de clientes, vamos criar um arquivo `dim_customers.yml` e incluir dois testes para a chave sk:
 
-```YAML
+```{code-block} yaml
 version: 2
  
 models:
@@ -527,7 +527,7 @@ $ dbt test
 
 - **Teste de relacionamento (relationship)**: os testes de relacionamento servem para garantir relacionamentos entre colunas de modelos distintos, similar ao comportamento de chaves estrangeiras no banco transacional. Geralmente é utilizado para mapear chaves de dimensões dentro das tabelas fato.
 
-```YAML
+```{code-block} yaml
 version: 2
  
 models:
@@ -544,7 +544,7 @@ models:
 
 - **Teste de valores aceitos (accepted_values)**: esse tipo de teste serve para garantir que os valores de uma coluna estejam em um intervalo pré-definido. Por exemplo, em uma coluna de status de pedido.
 
-```YAML
+```{code-block} yaml
 version: 2
  
 models:
@@ -563,7 +563,7 @@ Como exemplo, queremos validar a quantidade de itens em pedidos da nossa tabela 
 
 Após hipoteticamente confirmarmos com a Northwind que esse número é consistente, podemos utilizar como validação em nosso teste de dados `sum_quantity_march_1998.sql`. Notamos que a sintaxe do teste é muito próxima de um modelo mas que devemos escrever nossa consulta final como se quiséssemos que ele “desse errado”, isto é, queremos retornar todas as linhas onde o teste não passa ao rodar o dbt test,  e o sucesso no teste ocorre quando o resultado da consulta é vazio.
 
-```SQL
+```{code-block} sql
 * If sum of quantity in March-1998 is not 4065, throws an error */
  
 with
@@ -584,7 +584,7 @@ Ao combinarmos o uso de testes genéricos e singulares desde o início do projet
 
 A última etapa dentro de um projeto padrão de dbt é a documentação dos modelos e transformações. Essa documentação é feita a partir dos arquivos `schema.yml` que já utilizamos para escrever nossos testes de schema através de campos de descrição de tabelas e colunas. Ao criarmos as descrições, elas são adicionadas com outras informações que o dbt processa de como as fontes, modelos e testes do projeto estão estruturados. No exemplo abaixo documentamos a tabela dimensão Produtos e cada uma de suas colunas, de preferência na mesma ordem que no modelo final:
 
-```yaml
+```{code-block} yaml
 version: 2
 
 models:

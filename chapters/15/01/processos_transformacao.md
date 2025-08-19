@@ -1,3 +1,4 @@
+(processos_transformacao)=
 # 15.1 Os Processos de Transformação
 
 O ideal é que as diversas transformações necessárias para limpar e processar os dados para o uso nas diversas ferramentas posteriores no pipeline (como relatórios, BI, modelos de IA etc.) sejam centralizadas nesta etapa para garantir uma visão única dos dados em toda a organização:

@@ -1,3 +1,4 @@
+(sql)=
 # Capítulo 5 - SQL para Análise de Dados
 
 Um dos princípios da abordagem moderna de analytics é o uso de código de programação para definir transformações, visualizações e muito mais. É virtualmente impossível ser um Engenheiro de Dados (ou mesmo qualquer profissional de dados moderno) sem conhecer a linguagem fundamental dos bancos de dados:  o SQL.

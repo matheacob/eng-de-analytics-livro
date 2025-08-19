@@ -1,3 +1,4 @@
+(arquiteturas_transformacao)=
 # 15.2 Alternativas de Arquitetura de ETL/ELT
 
 Os processos de transformação de dados são semelhantes não importa a arquitetura do *pipeline* de dados utilizado, seja ela uma arquitetura de ETL tradicional ou de um ELT moderno. No entanto, cada arquitetura vai impactar profundamento na estrutura de times, profissionais responsáveis e produtividade do processo de transformação como um todo. Em geral, há 3 grandes alternativas de arquitetura:

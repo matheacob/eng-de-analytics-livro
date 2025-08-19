@@ -14,5 +14,5 @@ O banco de dados do ERP da empresa é um sistema PostgreSQL em um servidor nuvem
 Você vai atuar como Engenheiro de Analytics na Northwind e sua tarefa é estruturar uma infraestrutura de analytics completa utilizando os conceitos e as ferramentas adequadas para essa tarefa. Para isso, serão necessárias algumas etapas ao longo do caminho. Cada etapa corresponde a um capítulo deste livro, que finaliza sempre com um desafio prático.
 
 ```{note}
-Os dados e estudos de caso também estão disponíveis no [repositório]() do Livro. 
+Os dados e estudos de caso também estão disponíveis no [repositório](https://github.com/dpavancini/eng-de-analytics-livro) do Livro. 
 ```

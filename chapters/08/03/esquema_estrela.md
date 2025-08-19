@@ -15,7 +15,7 @@ Um esquema estrela para vendas contém fatos e dimensões
 
 Note que o uso do esquema estrela evita o uso de subqueries para a grande maioria dos casos analíticos. No exemplo abaixo, a consulta de vendas por mês, cidade, representante e produto é facilmente construída em SQL (nomes de colunas foram alterados para replicar o padrão de banco de dados):
 
-```SQL
+```{code-block} sql
 SELECT
 	datas.mes,
 	locais.cidade,

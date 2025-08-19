@@ -46,7 +46,7 @@ Os componentes da camada de ingestão mais comuns são:
 **Sob Demanda**
 Os componentes da camada de ingestão menos usuais são:
 
-- **Ingestão em streaming**: é o processo de ingestão de dados em tempo-real, necessário para fontes de dados de Eventos, IoT e Logs em geral. Neste tipo de ingestão, a plataforma de dados recebe os dados de forma **passiva** através de um sistema que "escuta" eventos (ex. [Apache Kafka]() ou [Google PubSub]()).
+- **Ingestão em streaming**: é o processo de ingestão de dados em tempo-real, necessário para fontes de dados de Eventos, IoT e Logs em geral. Neste tipo de ingestão, a plataforma de dados recebe os dados de forma **passiva** através de um sistema que "escuta" eventos (ex. [Apache Kafka](https://kafka.apache.org/) ou [Google PubSub](https://console.cloud.google.com/marketplace/product/google-cloud-platform/cloud-pub-sub)).
 
 ### Camada de Transformação
 
@@ -55,11 +55,11 @@ A camada de transformação) é responsável por processar e armazenar os dados 
 **Core**
 Os componentes da camada de ingestão mais comuns são:
 
-- **Data Warehouse**: o data warehouse é um banco de dados analítico capaz de armazenar, processar e disponibilizar enorme volume de dados para a tomada de decisão. Ele pode ser desenvolvido de uma forma que abstrai suas partes mais técnicas e disponibiliza somente a interface necessária para construção dos modelos (isto é, tabelas) como é o caso dos  Cloud Data Warehouses ([Google Big Query](), [Amazon Redshift](), [Azure Synapse]() e [Snowflake]()) ou ter uma arquitetura mais flexível que também é chamada de [Data Lakehouse](). Na visão do MDS, o Data Warehouse não serve apenas como um banco de dados bruto mas precisa ser modelado para atender aos requisitos de cada cliente, tarefa que fica a cargo da [Engenharia de Analytics]().
+- **Data Warehouse**: o data warehouse é um banco de dados analítico capaz de armazenar, processar e disponibilizar enorme volume de dados para a tomada de decisão. Ele pode ser desenvolvido de uma forma que abstrai suas partes mais técnicas e disponibiliza somente a interface necessária para construção dos modelos (isto é, tabelas) como é o caso dos  Cloud Data Warehouses ([Google Big Query](https://cloud.google.com/bigquery), [Amazon Redshift](https://aws.amazon.com/pt/redshift/), [Azure Synapse](https://azure.microsoft.com/en-us/products/synapse-analytics) e [Snowflake](https://www.snowflake.com/pt_br/)) ou ter uma arquitetura mais flexível que também é chamada de **Data Lakehouse**. Na visão do MDS, o Data Warehouse não serve apenas como um banco de dados bruto mas precisa ser modelado para atender aos requisitos de cada cliente, tarefa que fica a cargo da **Engenharia de Analytics**.
 
-- **Processamento em Lotes**: o componente de processamento em lotes é responsável por executar a transformação de dados brutos em dados modelados. Salvo exceções, o processamento é realizado dentro do Data Warehouse através da arquitetura ELT. Em alguns projetos esse processamento pode ser separado do armazenament, como no caso da construção de [Data Lakehouses]().
+- **Processamento em Lotes**: o componente de processamento em lotes é responsável por executar a transformação de dados brutos em dados modelados. Salvo exceções, o processamento é realizado dentro do Data Warehouse através da arquitetura ELT. Em alguns projetos esse processamento pode ser separado do armazenament, como no caso da construção de **Data Lakehouses**.
 
-- **Modelagem de Dados**: para realizar a modelagem de dados, isto é, a aplicação de regras de negócio, transformações, construção de tabelas etc. utilizamos a ferramenta [dbt]() dentro do MDS. Essa ferramenta **não processa dados diretamente** mas envia instruções (em SQL) para o componente de processamento em lotes da plataforma.
+- **Modelagem de Dados**: para realizar a modelagem de dados, isto é, a aplicação de regras de negócio, transformações, construção de tabelas etc. utilizamos a ferramenta [dbt](https://www.getdbt.com/) dentro do MDS. Essa ferramenta **não processa dados diretamente** mas envia instruções (em SQL) para o componente de processamento em lotes da plataforma.
 
 
 **Sob Demanda**
@@ -69,7 +69,7 @@ Os componentes da camada de ingestão menos usuais são:
 
 - **Processamento Streaming**: projetos que possuem fontes de dados em tempo-real necessitam de um componente de processamento de dados em streaming, que consegue processar os dados à medida que chegam na plataforma de dados. 
 
-- **Desenvolvimento de AI&ML**: o desenvolvimento de modelos de AI & ML só é previsto em projetos com uma plataforma de dados mais desenvolvida, devido à visão de tratar modelos como software. Para o desenvolvimento de modelos é prevista a utilização de Notebook gerenciados na nuvem ([Amazon SageMaker](), [Google Vertex](), etc) ou através de um PaaS como a [Databricks](). O desenvolvimento e deploy dos modelos deve seguir um processo de MLOps bem estruturado e para isso recomendamos o uso do [framework Kedro]().
+- **Desenvolvimento de AI&ML**: o desenvolvimento de modelos de AI & ML só é previsto em projetos com uma plataforma de dados mais desenvolvida, devido à visão de tratar modelos como software. Para o desenvolvimento de modelos é prevista a utilização de Notebook gerenciados na nuvem ([Amazon SageMaker](https://aws.amazon.com/pt/sagemaker/), [Google Vertex](https://cloud.google.com/vertex-ai), etc) ou através de um PaaS como a [Databricks](https://www.databricks.com/). O desenvolvimento e deploy dos modelos deve seguir um processo de MLOps bem estruturado e para isso recomendamos o uso do [framework Kedro](https://kedro.org/).
 
 
 ### Camada de Disponibilização
@@ -86,7 +86,7 @@ Os componentes da camada de Disponibilização mais comuns são:
 **Sob Demanda**
 Os componentes da camada de Disponibilização menos usuais são:
 
-- **Motor de Big Data**: motor de big data (ou *Big Data Query Engines*) permitem consultar grandes volumes de dados armazenados no Data Lake sem a necessidade de um Data Warehouse. Podem existir em projetos maiores onde há a necessidade desse tipo de acesso direto utilizando ferramentas como o [Athena](), [Presto]() e [Dremio]().
+- **Motor de Big Data**: motor de big data (ou *Big Data Query Engines*) permitem consultar grandes volumes de dados armazenados no Data Lake sem a necessidade de um Data Warehouse. Podem existir em projetos maiores onde há a necessidade desse tipo de acesso direto utilizando ferramentas como o [Athena](https://aws.amazon.com/pt/athena/), [Presto](https://prestodb.io/) e [Dremio](https://www.dremio.com/).
 
 
 ### Camada de Produtos
@@ -96,7 +96,7 @@ A camada de Produtos é a camada que expõe produtos de dados para consumidores 
 **Core**
 Os componentes da camada de Produtos mais comuns são:
 
-- **Self-service BI**: o self-service BI é uma ferramenta de suporte à tomada de decisão que permite construir visualizações de dados e gerar insights a partir dos dados. É uma ferramenta essencial em qualquer infraestrutura de dados para analytics e incluir ferramentas como [Microsoft PowerBI](), [Tableau](), [Metabase](), [Mode](), [Looker]() etc.
+- **Self-service BI**: o self-service BI é uma ferramenta de suporte à tomada de decisão que permite construir visualizações de dados e gerar insights a partir dos dados. É uma ferramenta essencial em qualquer infraestrutura de dados para analytics e incluir ferramentas como [Microsoft PowerBI](https://www.microsoft.com/en-us/power-platform/products/power-bi), [Tableau](https://www.tableau.com/), [Metabase](https://www.metabase.com/), [Mode](https://mode.com/), [Looker](https://lookerstudio.google.com/u/0/navigation/reporting) etc.
 
 **Sob Demanda**
 Os componentes da camada de Produtos menos usuais são:
@@ -116,7 +116,7 @@ Esta camada disponibiliza recursos para o funcionamento da plataforma de dados. 
 **Core**
 Os componentes da camada de Infra & Orquestração mais comuns são:
 
-- **Orquestração**: componente responsável por orquestrar a execução dos demais componentes da plataforma. Pode ser uma ferramenta dedicada (ex. [Apache Airflow]()) ou parte de outros componentes (ex. execução por intervalos ou periódica).
+- **Orquestração**: componente responsável por orquestrar a execução dos demais componentes da plataforma. Pode ser uma ferramenta dedicada (ex. [Apache Airflow](https://airflow.apache.org/)) ou parte de outros componentes (ex. execução por intervalos ou periódica).
 - **Compute & Storage**: inclui componentes mais próximos do *bare metal* ou virtualizações de recursos de computação (ex. Máquinas Virtuais EC2) e armazenamento (ex. HDs). Em geral, em arquiteturas MDS menos complexas esses recursos não são acessáveis diretamente.
 - **Redes**: componentes que fornecem recursos de comunicação de rede como IPs estáticos e dinâmicos, grupos de segurança, subredes. Em geral, em arquiteturas MDS menos complexas esses recursos não são acessáveis diretamente.
 
@@ -127,9 +127,9 @@ Os componentes da camada de Infra & Orquestração menos usuais são:
 
 - **Monitoramento**: componentes que monitoram os recursos da plataforma como consumo de dados, faturamento, etc.
 
-- **Container Registry**: componentes que realizam o registro de [Docker Containers]() ou [Kubernetes]()
+- **Container Registry**: componentes que realizam o registro de [Docker Containers](https://hub.docker.com/) ou [Kubernetes](https://kubernetes.io/)
 
-- **IaC**: componentes de *Infrastructure as code* que permitem modularizar e gerenciar infraestrutura em nuvem (ex. [Terraform]()).
+- **IaC**: componentes de *Infrastructure as code* que permitem modularizar e gerenciar infraestrutura em nuvem (ex. [Terraform](https://developer.hashicorp.com/terraform)).
 
 - **Kubernetes**: é um sistema de orquestração de contêineres open-source que automatiza a implantação, o dimensionamento e a gestão de aplicações em contêineres.
 
@@ -140,7 +140,7 @@ Esta camada é responsável pela operação do desenvolvimento de software como 
 **Core**
 Os componentes da camada de Operações mais comuns são:
 
-- **VCS**: esse componente é responsável pelo controle de versão de código como [git](), [bitbucket]() e [gitlab](). É um componente core do MDS pois um dos princípios dessa arquitetura é o de tratar *Analytics as Code*.
+- **VCS**: esse componente é responsável pelo controle de versão de código como [github](https://github.com/), [bitbucket](https://bitbucket.org/product/) e [gitlab](https://about.gitlab.com/). É um componente core do MDS pois um dos princípios dessa arquitetura é o de tratar *Analytics as Code*.
 
 **Sob Demanda**
 Os componentes da camada de ingestão menos usuais são:
@@ -158,13 +158,13 @@ Os componentes da camada de Governança mais comuns são:
 
 - **Segurança**: componentes responsáveis por garantir a segurança da plataforma e monitorar uso de dados pessoais, sensíveis etc.  Em geral, em arquiteturas MDS menos complexas esses recursos não são acessáveis diretamente.
 
-- **Data Quality**: componentes responsáveis por garantir a qualidade dos dados da plataforma. Pode ser parte de outro componente (ex. testes no dbt) ou uma ferramenta específica (ex. [GreatExpectations]()).
+- **Data Quality**: componentes responsáveis por garantir a qualidade dos dados da plataforma. Pode ser parte de outro componente (ex. testes no dbt) ou uma ferramenta específica (ex. [GreatExpectations](https://greatexpectations.io/)).
 
-- **Catálogo de Dados**: componente responsável por catalogar e documentar os dados disponíveis na plataforma de dados, assim como apresentar o **data lineage** de criação desses dados. Pode ser parte de outro componente (ex. dbt docs) ou uma ferramenta específica (ex. [Openmetadata]()). 
+- **Catálogo de Dados**: componente responsável por catalogar e documentar os dados disponíveis na plataforma de dados, assim como apresentar o **data lineage** de criação desses dados. Pode ser parte de outro componente (ex. dbt docs) ou uma ferramenta específica (ex. [Openmetadata](https://open-metadata.org/)). 
 
 **Sob Demanda**
 Os componentes da camada de Governança menos usuais são:
 
-- **Gestão de Metadados**: componente responsável por gerenciar os metadados dos demais componentes da plataforma (Ex. [Backstage]()). Em geral, em arquiteturas MDS menos complexas esses recursos não são acessáveis diretamente.
+- **Gestão de Metadados**: componente responsável por gerenciar os metadados dos demais componentes da plataforma (Ex. [Backstage](https://backstage.io/)). Em geral, em arquiteturas MDS menos complexas esses recursos não são acessáveis diretamente.
 
-- **Model Reporting**: componente responsável por monitorar e reportar resultados de modelos de Machine Learning (ex. [MLFlow]().
+- **Model Reporting**: componente responsável por monitorar e reportar resultados de modelos de Machine Learning (ex. [MLFlow](https://mlflow.org/)).
