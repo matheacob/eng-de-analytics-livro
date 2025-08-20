@@ -564,8 +564,8 @@ Como exemplo, queremos validar a quantidade de itens em pedidos da nossa tabela 
 Após hipoteticamente confirmarmos com a Northwind que esse número é consistente, podemos utilizar como validação em nosso teste de dados `sum_quantity_march_1998.sql`. Notamos que a sintaxe do teste é muito próxima de um modelo mas que devemos escrever nossa consulta final como se quiséssemos que ele “desse errado”, isto é, queremos retornar todas as linhas onde o teste não passa ao rodar o dbt test,  e o sucesso no teste ocorre quando o resultado da consulta é vazio.
 
 ```{code-block} sql
-* If sum of quantity in March-1998 is not 4065, throws an error */
- 
+/* If sum of quantity in March-1998 is not 4065, throws an error */
+
 with
    sum_quantity as (
        SELECT
